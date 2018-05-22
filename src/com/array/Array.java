@@ -47,13 +47,15 @@ public class Array<E> {
 	//向数组最后一个位置添加元素
 	public void addLast(E e) {
 		if(size==data.length) {
-			throw new IllegalArgumentException("数组容量已满");
+//			throw new IllegalArgumentException("数组容量已满");
+			resize(2*data.length);
 		}
 		data[size] = e;
 		size++;
 		//add(size,e);
 	}
 	
+
 	//向数组第一个位置添加元素
 	public void addFirst(E e) {
 		add(0,e);
@@ -65,7 +67,8 @@ public class Array<E> {
 			throw new IllegalArgumentException("索引越界");
 		}
 		if(size==data.length) {
-			throw new IllegalArgumentException("数组容量已满");
+//			throw new IllegalArgumentException("数组容量已满");
+			resize(2*data.length);
 		}
 		
 		for(int i=size;i>=index;i--) {
@@ -83,6 +86,17 @@ public class Array<E> {
 		}
 		
 		return data[index];
+	}
+
+	
+	//获取第一个元素
+	public E getFirst() {
+		return data[0];
+	}
+	
+	//获取最后一个元素
+	public E getLast() {
+		return data[size-1];
 	}
 	
 	//修改指定索引的元素
@@ -126,6 +140,11 @@ public class Array<E> {
 			data[i]=data[i+1];
 		}
 		size--;
+		
+		if(size==data.length/4&&data.length/2!=0) {
+			resize(data.length/2);
+		}
+		
 		return rs;
 	}
 	
@@ -145,7 +164,15 @@ public class Array<E> {
 		return "size:"+size+" capacity:"+data.length+"\n"+Arrays.toString(data);
 	}
 	
-	
+	//数组扩容
+	private void resize(int capacity) {
+		E[] newData = (E[])new Object[capacity];
+		
+		for(int i=0;i<size;i++) {
+			newData[i]=data[i]; 
+		}
+		data = newData;
+	}
 	
 	
 }
