@@ -136,9 +136,14 @@ public class Array<E> {
 			throw new IllegalAccessError("删除错误  索引越界");
 		}
 		E rs = data[index];
-		for(int i=index;i<size;i++) {
-			data[i]=data[i+1];
+//		for(int i=index;i<size;i++) {
+//			data[i]=data[i+1];
+//		}
+		//防止 索引在最后一位
+		for(int i = index+1;i<size;i++) {
+			data[i-1]=data[i];
 		}
+		
 		size--;
 		
 		if(size==data.length/4&&data.length/2!=0) {
