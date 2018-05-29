@@ -44,32 +44,20 @@ public class BST<E extends Comparable<E>> {
 	
 	//添加元素
 	public void add(E e) {
-		if(root == null) {
-			root = new Node(e);
-			size++;
-		}else if(root.data.compareTo(e)==-1) {
-			recursionAdd(root.left,e);
-		}else if(root.data.compareTo(e)==1) {
-			recursionAdd(root.right,e);
-		}else {
-			return;
-		}
-		
+		root = recursionAdd(root, e);
 	}
 	
 	//添加的递归算法
-	private void recursionAdd(Node root , E e) {
-		if(root.data == null) {
-			root.data = e;
-			size++;
-		}else if(root.data.compareTo(e)==-1) {
-			//小于根节点
-			recursionAdd(root.left,e);
-		}else if(root.data.compareTo(e)==1) {
-			//大于根节点
-			recursionAdd(root.right,e);
+	private Node recursionAdd(Node node , E e) {
+		if(node == null) {
+			return new Node(e);
+			//对等于情况不做处理默认所有数据都不相等
+		}else if(node.data.compareTo(e)==-1){
+			node.left = recursionAdd(root.left, e);
+			return node.left;
 		}else {
-			return ;
+			node.right = recursionAdd(node.right, e);
+			return node.right;
 		}
 	}
 	
