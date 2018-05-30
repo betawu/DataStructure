@@ -1,4 +1,9 @@
 package com.binarysearchtree;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
 /**
  * 
  * @author beta
@@ -94,6 +99,82 @@ public class BST<E extends Comparable<E>> {
 		preOrder(node.right);
 	}
 	
+	//前序遍历的非递归实现
+	public void preOrderNR() {
+		preOrderNr(root);
+	}
+	
+	private void preOrderNr(BST<E>.Node root) {
+		Stack<Node> stack = new Stack<>();
+		if(root != null) {
+			stack.push(root);
+		}
+		
+		while(!stack.isEmpty()) {
+			Node node = stack.pop();
+			System.out.println(node.data);
+			if(node.right!=null) {
+				stack.push(node.right);
+			}
+			if(node.left!=null) {
+				stack.push(node.left);
+			}
+		}
+		
+		
+	}
+
+	//中序遍历
+	public void inOrder() {
+		inOrder(root);
+	}
+	
+	private void inOrder(BST<E>.Node node) {
+		if(node == null) {
+			return ;
+		}
+		
+		inOrder(node.left);
+		System.out.println(node.data);
+		inOrder(node.right);
+	}
+
+	//后续遍历
+	public void postOrder() {
+		postOrder(root);
+	}
+	
+	private void postOrder(BST<E>.Node node) {
+		if(node == null) {
+			return ;
+		}
+		
+		postOrder(node.left);
+		postOrder(node.right);
+		System.out.println(node.data);
+	}
+
+	//层序遍历
+	public void levelOrder() {
+		Queue<Node> q = new LinkedList<>();
+		
+		if(root != null) {
+			q.add(root);
+		}
+		while(!q.isEmpty()) {
+			Node node = q.remove();
+			System.out.println(node.data);
+			if(node.left!=null) {
+				q.add(node.left);
+			}
+			if(node.right!=null) {
+				q.add(node.right);
+			}
+		}
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		int[] arr = {5,3,6,8,4,2};
 		BST<Integer> bst = new BST<>();
@@ -102,5 +183,16 @@ public class BST<E extends Comparable<E>> {
 		}
 		
 		bst.preOrder();
+		System.out.println("---");
+		bst.preOrderNR();
+		System.out.println("---");
+		
+		
+//		bst.inOrder();
+		
+//		bst.postOrder();
+		
+		
+		bst.levelOrder();
 	}
 }
