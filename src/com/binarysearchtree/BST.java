@@ -1,7 +1,11 @@
 package com.binarysearchtree;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -175,17 +179,77 @@ public class BST<E extends Comparable<E>> {
 	}
 	
 	
-	public static void main(String[] args) {
-		int[] arr = {5,3,6,8,4,2};
-		BST<Integer> bst = new BST<>();
-		for (int i : arr) {
-			bst.add(i);
+	//获取最大元素
+	public E maxmum() {
+		return maxmum(root);
+	}
+	
+	private E maxmum(BST<E>.Node node) {
+		if(node.right == null) {
+			return node.data;
 		}
-		
-		bst.preOrder();
-		System.out.println("---");
-		bst.preOrderNR();
-		System.out.println("---");
+		return maxmum(node.right);
+	}
+
+	//获取最小元素
+	public E minmum() {
+		return minmum(root);
+	}
+	
+	private E minmum(BST<E>.Node node) {
+		if(node.left == null) {
+			return node.data;
+		}
+		return minmum(node.left);
+	}
+
+	//删除最小元素
+	public E removeMin() {
+		E rs = minmum();
+		root = removeMin(root);
+		return rs;
+	}
+	
+	private BST<E>.Node removeMin(BST<E>.Node node) {
+		if(node.left == null) {
+			Node ret = node.right;
+			node.right = null;
+			size--;
+			return ret;
+		}
+		node.left = removeMin(node.left);
+		return node;
+	}
+	
+	//删除最大元素
+	public E removeMax() {
+		E rs = maxmum();
+		root = removeMax(root);
+		return rs;
+	}
+
+	private BST<E>.Node removeMax(BST<E>.Node node) {
+		if(node.right == null) {
+			Node ret = node.left;
+			node.left = null;
+			size--;
+			return ret;
+		}
+		node.right = removeMax(node.right);
+		return node;
+	}
+
+	public static void main(String[] args) {
+//		int[] arr = {5,3,6,8,4,2};
+//		BST<Integer> bst = new BST<>();
+//		for (int i : arr) {
+//			bst.add(i);
+//		}
+//		
+//		bst.preOrder();
+//		System.out.println("---");
+//		bst.preOrderNR();
+//		System.out.println("---");
 		
 		
 //		bst.inOrder();
@@ -193,6 +257,18 @@ public class BST<E extends Comparable<E>> {
 //		bst.postOrder();
 		
 		
-		bst.levelOrder();
+//		bst.levelOrder();
+		
+		//删除最大和最小元素测试
+		BST<Integer> b = new BST<>();
+		Random r = new Random();
+		for(int i = 0 ;i<1000;i++) {
+			b.add(r.nextInt(1000));
+		}
+		List<Integer> list = new ArrayList<>();
+		while(!b.isEmpty()) {
+			list.add(b.removeMin());
+		}
+		System.out.println(list);
 	}
 }
