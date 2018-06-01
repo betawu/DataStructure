@@ -102,6 +102,7 @@ public class LinkedList<E> {
 			if(cur.data.equals(e)) {
 				return true;
 			}
+			cur = cur.next;
 		}
 		return false;
 	}
@@ -166,6 +167,27 @@ public class LinkedList<E> {
 		System.out.println(list);
 		list.removeLast();
 		System.out.println(list);
+	}
+
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	public int size() {
+		return size;
+	}
+
+	public void remove(E e) {
+		Node pre = dummyHead;
+		while(pre.next != null) {
+			if(pre.next.data.equals(e)) {
+				Node node = pre.next;
+				pre.next = node.next;
+				node = null;
+				size--;
+			}
+			pre = pre.next;
+		}
 	}
 	
 	//找当前节点  从虚拟节点的下一个节点开始
