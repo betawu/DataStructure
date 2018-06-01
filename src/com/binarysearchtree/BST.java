@@ -180,34 +180,34 @@ public class BST<E extends Comparable<E>> {
 	
 	
 	//获取最大元素
-	public E maxmum() {
+	public Node maxmum() {
 		return maxmum(root);
 	}
 	
-	private E maxmum(BST<E>.Node node) {
+	private Node maxmum(BST<E>.Node node) {
 		if(node.right == null) {
-			return node.data;
+			return node;
 		}
 		return maxmum(node.right);
 	}
 
 	//获取最小元素
-	public E minmum() {
+	public Node minmum() {
 		return minmum(root);
 	}
 	
-	private E minmum(BST<E>.Node node) {
+	private Node minmum(BST<E>.Node node) {
 		if(node.left == null) {
-			return node.data;
+			return node;
 		}
 		return minmum(node.left);
 	}
 
 	//删除最小元素
 	public E removeMin() {
-		E rs = minmum();
+		Node rs = minmum();
 		root = removeMin(root);
-		return rs;
+		return rs.data;
 	}
 	
 	private BST<E>.Node removeMin(BST<E>.Node node) {
@@ -223,9 +223,9 @@ public class BST<E extends Comparable<E>> {
 	
 	//删除最大元素
 	public E removeMax() {
-		E rs = maxmum();
+		Node rs = maxmum();
 		root = removeMax(root);
-		return rs;
+		return rs.data;
 	}
 
 	private BST<E>.Node removeMax(BST<E>.Node node) {
@@ -239,12 +239,45 @@ public class BST<E extends Comparable<E>> {
 		return node;
 	}
 
+	//删除任意元素
+	public void remove(E e) {
+		root = remove(root,e);
+	}
+	
+	private BST<E>.Node remove(BST<E>.Node node, E e) {
+		if(node == null) {
+			return null;
+		}
+		
+		if(e.compareTo(node.data) == -1) {
+			node.left = remove(node.left,e);
+		}else if(e.compareTo(node.data) == 1) {
+			node.right = remove(node.right,e);
+		}else {
+			//如果删除节点的左子树为空
+			if(node.left == null) {
+				return node.right;
+			}else if(node.right == null) {
+				//如果删除节点的右子树为空
+				return node.left;
+			}else {
+				//左右子树都不为空
+				Node successor = minmum(node.right);
+				node.right = removeMin(node.right);
+				successor.left = node.left;
+				successor.right = node.right;
+				return successor;
+			}
+		}
+		return node;
+	}
+
 	public static void main(String[] args) {
-//		int[] arr = {5,3,6,8,4,2};
-//		BST<Integer> bst = new BST<>();
-//		for (int i : arr) {
-//			bst.add(i);
-//		}
+		int[] arr = {5,3,6,8,4,2};
+		BST<Integer> bst = new BST<>();
+		for (int i : arr) {
+			bst.add(i);
+		}
 //		
 //		bst.preOrder();
 //		System.out.println("---");
@@ -260,15 +293,19 @@ public class BST<E extends Comparable<E>> {
 //		bst.levelOrder();
 		
 		//删除最大和最小元素测试
-		BST<Integer> b = new BST<>();
-		Random r = new Random();
-		for(int i = 0 ;i<1000;i++) {
-			b.add(r.nextInt(1000));
-		}
-		List<Integer> list = new ArrayList<>();
-		while(!b.isEmpty()) {
-			list.add(b.removeMin());
-		}
-		System.out.println(list);
+//		BST<Integer> b = new BST<>();
+//		Random r = new Random();
+//		for(int i = 0 ;i<10;i++) {
+//			b.add(r.nextInt(1000));
+//		}
+//		List<Integer> list = new ArrayList<>();
+//		while(!b.isEmpty()) {
+//			list.add(b.removeMin());
+//		}
+//		System.out.println(list);
+		
+		
+		bst.remove(6);
+		bst.inOrder();
 	}
 }
