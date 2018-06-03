@@ -162,7 +162,12 @@ public class Array<E> {
 		}
 	}
 	
-	
+	//交换指定索引的元素
+	public void swap(int i,int j) {
+		E e = data[i];
+		data[i] = data[j];
+		data[j] = e;
+	}
 
 	@Override
 	public String toString() {
