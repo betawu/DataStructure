@@ -315,19 +315,6 @@ public class AVLTree<E extends Comparable<E>> {
 		}
 		
 	}
-	
-	
-	//获取最大元素
-	public Node maxmum() {
-		return maxmum(root);
-	}
-	
-	private Node maxmum(Node node) {
-		if(node.right == null) {
-			return node;
-		}
-		return maxmum(node.right);
-	}
 
 	//获取最小元素
 	public Node minmum() {
@@ -341,41 +328,7 @@ public class AVLTree<E extends Comparable<E>> {
 		return minmum(node.left);
 	}
 
-	//删除最小元素
-	public E removeMin() {
-		Node rs = minmum();
-		root = removeMin(root);
-		return rs.data;
-	}
 	
-	private Node removeMin(Node node) {
-		if(node.left == null) {
-			Node ret = node.right;
-			node.right = null;
-			size--;
-			return ret;
-		}
-		node.left = removeMin(node.left);
-		return node;
-	}
-	
-	//删除最大元素
-	public E removeMax() {
-		Node rs = maxmum();
-		root = removeMax(root);
-		return rs.data;
-	}
-
-	private Node removeMax(Node node) {
-		if(node.right == null) {
-			Node ret = node.left;
-			node.left = null;
-			size--;
-			return ret;
-		}
-		node.right = removeMax(node.right);
-		return node;
-	}
 
 	//删除任意元素
 	public void remove(E e) {
@@ -387,27 +340,55 @@ public class AVLTree<E extends Comparable<E>> {
 			return null;
 		}
 		
+		Node rs = null;
 		if(e.compareTo(node.data) == -1) {
 			node.left = remove(node.left,e);
+			rs = node;
 		}else if(e.compareTo(node.data) == 1) {
 			node.right = remove(node.right,e);
+			rs = node;
 		}else {
 			//如果删除节点的左子树为空
 			if(node.left == null) {
-				return node.right;
+				rs = node.right;
 			}else if(node.right == null) {
 				//如果删除节点的右子树为空
-				return node.left;
+				rs = node.left;
 			}else {
 				//左右子树都不为空
 				Node successor = minmum(node.right);
-				node.right = removeMin(node.right);
+				node.right = remove(node.right,successor.data);
 				successor.left = node.left;
 				successor.right = node.right;
-				return successor;
+				rs = successor;
 			}
 		}
-		return node;
+		
+		if(rs == null) {
+			return null;
+		}
+		
+		if(getBalanceFactor(rs)>1&&getBalanceFactor(rs.left)>=0) {
+			rs = rightRotate(rs);
+		}
+		
+		//RR情况
+		if(getBalanceFactor(rs)<-1&&getBalanceFactor(rs.right)<=0) {
+			return leftRotate(rs);
+		}
+		
+		//LR 先对左子树进行左旋转 然后对右子树进行右旋转
+		if(getBalanceFactor(rs)>1&&getBalanceFactor(rs.left)<0) {
+			rs.left = leftRotate(rs.left);
+			return leftRotate(rs);
+		}
+		
+		//RL 先对右子树进行右旋转 然后进行左旋转
+		if(getBalanceFactor(rs)<-1&&getBalanceFactor(rs.right)>0) {
+			rs.right = rightRotate(rs.right);
+			return rightRotate(rs);
+		}
+		return rs;
 	}
 
 	

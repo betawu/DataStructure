@@ -304,8 +304,8 @@ public class BST<E extends Comparable<E>> {
 //		}
 //		System.out.println(list);
 		
-		
-		bst.remove(6);
-		bst.inOrder();
+//		
+//		bst.remove(6);
+//		bst.inOrder();
 	}
 }

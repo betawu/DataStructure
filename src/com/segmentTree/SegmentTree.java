@@ -87,14 +87,43 @@ public class SegmentTree<E> {
 		return m.merge(leftResult, rightResult);
 	}
 
+	//更新线段树
+	public void set(int index,E e) {
+		data[index] = e;
+		set(0,0,data.length-1,index,e);
+	}
+	
+	
+	private void set(int treeIndex, int l, int r, int index, E e) {
+		if(l == r) {
+			tree[treeIndex] = e;
+			return;
+		}
+		
+		int mid = l+(r-l)/2;
+		int lc = getLeftChild(treeIndex);
+		int rc = getRightChild(treeIndex);
+		
+		if(index>mid) {
+			set(rc, mid+1, r, index, e);
+		}else {
+			set(lc, l, mid, index, e);
+		}
+		
+		tree[treeIndex] = m.merge(tree[lc], tree[rc]);
+	}
+
 	@Override
 	public String toString() {
 		return Arrays.toString(tree);
 	}
 
 	public static void main(String[] args) {
-		Integer[] arr= {-2,0,3,-5,2,-1};
+		Integer[] arr= {-2,0,3,-5,2,-1,1,1};
 		SegmentTree<Integer> st = new SegmentTree<>(arr,(a,b)->a+b);
+//		Integer[] arr= {-2,0,3,-5,2,-1};
+//		SegmentTree<Integer> st = new SegmentTree<>(arr,(a,b)->a+b);
+		st.set(7, 0);
 		System.out.println(st);
 		System.out.println(st.query(1, 2));
 	}
