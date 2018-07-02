@@ -8,12 +8,19 @@ package com.hash;
  */
 
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class HashTable <K,V>{
 	private int M;
 	private TreeMap<K, V>[] arr;
 	private int size;
+	
+	//哈希表的动态空间处理
+	private static final int upperTol = 10;
+	private static final int lowerTol = 2;
+	private static final int capacity = 7;
+	
 	public HashTable(int m) {
 		this.M = m;
 		arr = new TreeMap[m];
@@ -22,7 +29,7 @@ public class HashTable <K,V>{
 		}
 	}
 	public HashTable() {
-		this(97);
+		this(capacity);
 	}
 	
 	private int hash(K k) {
@@ -37,6 +44,10 @@ public class HashTable <K,V>{
 			t.put(k, v);
 			size++;
 		}
+		
+		if(size>upperTol*M) {
+			resize(2*M);
+		}
 	}
 	
 	public V remove(K k) {
@@ -45,6 +56,11 @@ public class HashTable <K,V>{
 		if(t.containsKey(k)) {
 			rs = t.remove(k);
 		}
+		
+		if(size<lowerTol*M&&M/2>capacity) {
+			resize(M/2);
+		}
+		
 		return rs;
 	}
 	
@@ -58,5 +74,23 @@ public class HashTable <K,V>{
 	
 	public V get(K k) {
 		return arr[hash(k)].get(k);
+	}
+	
+	private void resize(int newM) {
+		TreeMap<K, V>[] newArr = new TreeMap[newM];
+		for(int i=0;i<newArr.length;i++) {
+			newArr[i] = new TreeMap<>();
+		}
+
+		int oldM = M;
+		this.M = newM;
+		for(int i=0;i<oldM;i++) {
+			TreeMap<K,V> map = arr[i];
+			for(K k:map.keySet()) {
+				newArr[hash(k)].put(k, map.get(k));
+			}
+		}
+		
+		this.arr = newArr;
 	}
 }
