@@ -39,7 +39,7 @@ public class Path {
 		}
 	}
 
-	public List<Integer> hasPath(int w){
+	public List<Integer> path(int w){
 		List<Integer> list = new ArrayList<>();
 		Stack<Integer> s = new Stack<>();
 		
@@ -56,9 +56,14 @@ public class Path {
 	}
 	
 	public void showPath(int w) {
-		List<Integer> list = hasPath(w);
+		List<Integer> list = path(w);
 		for (Integer i : list) {
 			System.out.println(i);
 		}
+	}
+	
+	//有没有路径看有没有被访问过
+	public boolean hasPath(int w) {
+		return v[w];
 	}
 }
