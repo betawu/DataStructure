@@ -18,7 +18,7 @@ public class ShortPath {
 	private int[] ord;//顶点到起始点的距离
 	private int s;//起始点
 	
-	public ShortPath(Graph g,int s) {
+	public ShortPath(Graph g,int s) { 
 		this.g = g;
 		this.s = s;
 		v = new boolean[s];
