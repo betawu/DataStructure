@@ -1,4 +1,4 @@
-package com.spanGraph;
+package com.weightGraph;
 
 import java.util.ArrayList;
 import java.util.List;

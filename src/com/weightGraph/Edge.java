@@ -1,4 +1,4 @@
-package com.spanGraph;
+package com.weightGraph;
 
 /**
  * 有权图的边
