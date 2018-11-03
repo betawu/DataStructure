@@ -4,75 +4,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 邻接矩阵
+ * 稠密图-临接矩阵表示
  * @author beta
  *
  */
-public class DenseGraph implements Graph{
+public class DenseGraph implements Graph {
 
-	private int m;//顶点的个数
-	private int n;//边的个数
+	private int v;//顶点个数
+	private int e;//边的个数
+	private boolean directed;//是否是有向图
 	private boolean[][] g;
-	private	boolean directed;//是否是无向图
 	
-	public DenseGraph(int m,boolean directed) {
-		this.m = m;
+	public DenseGraph(int v, boolean directed) {
+		this.v = v;
+		this.e = 0;
 		this.directed = directed;
-		g = new boolean[m][m];
-		this.n = 0;
+		this.g = new boolean[v][v];
 	}
 	
-	@Override
+	public boolean hasEdge(int m, int n) {
+		return g[m][n];
+	}
+	
+	public void add(int m, int n) {
+		if (!hasEdge(m, n)) {
+			g[m][n] = true;
+			if (!directed) {
+				g[n][m] = true;
+			}
+			e++;
+		}
+	}
+	
 	public int V() {
-		return m;
+		return v;
 	}
-
-	@Override
+	
 	public int E() {
-		return n;
+		return e;
 	}
-
-	@Override
-	public void addEdge(int v, int w) {
-		if(hasEdge(v, w)) {
-			return ;
-		}
-		
-		g[v][w] = true;
-		if(!directed) {
-			g[w][v] = true;
-		}
-		n++;
-	}
-
-	@Override
-	public boolean hasEdge(int v, int w) {
-		return g[v][w];
-	}
-
-	@Override
-	public List<Integer> adj(int i) {
+	
+	//获取顶点m相邻的边
+	public List<Integer> getAdj(int m){
 		List<Integer> list = new ArrayList<>();
-		for(int j = 0;j<m;j++) {
-			if(g[i][j]) {
-				list.add(j);
+		boolean[] arr = g[m];
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i]) {
+				list.add(i);
 			}
 		}
 		return list;
 	}
-
-	@Override
-	public void show() {
-		for (boolean[] bs : g) {
-			for (boolean b : bs) {
-				if(b) {
-					System.out.print(1+" ");
-				}else {
-					System.out.print(0+" ");
-				}
-			}
-			System.out.println();
-		}
-	}
-
 }

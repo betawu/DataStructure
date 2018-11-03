@@ -1,69 +1,68 @@
 package com.graph;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 /**
- * 寻路
+ * 深度优先遍历--寻路
  * @author beta
  *
  */
 public class Path {
-	private Graph g;
-	private boolean[] v;//顶点是否被访问
-	private int[] from;//顶点上一个顶点
-	private int s;//起始顶点
 	
-	public Path(Graph g,int s) {
+	private Graph g;
+	
+	private boolean[] visited;
+	
+	private int[] from;
+
+	//m到其他顶点的路径
+	public Path(Graph g, int m) {
 		this.g = g;
-		this.s = s;
-		this.v = new boolean[g.V()];
+		this.visited = new boolean[g.V()];
 		this.from = new int[g.V()];
-		for(int i=0;i<g.V();i++) {
-			v[i] = false;
+		for (int i = 0; i < g.V(); i++) {
 			from[i] = -1;
 		}
 		
-		bfs(s);
+		List<Integer> list = g.getAdj(m);
+		visited[m] = true;
+		for (Integer j : list) {
+			if (!visited[j]) {
+				from[j] = m;
+				dfs(j);
+			}
+		}
 	}
-
-	private void bfs(int s) {
-		v[s] = true;
-		List<Integer> list = g.adj(s);
-		for (Integer i : list) {
-			from[i] = s;
-			if(!v[i]) {
-				bfs(i);
+	
+	private void dfs(Integer i) {
+		visited[i] = true;
+		List<Integer> list = g.getAdj(i);
+		for (Integer j : list) {
+			if (!visited[j]) {
+				from[j] = i;
+				dfs(j);
 			}
 		}
 	}
 
-	public List<Integer> path(int w){
-		List<Integer> list = new ArrayList<>();
+	public boolean hasPath(int n) {
+		return visited[n];
+	}
+	
+	//m到n的路径
+	public void showPath(int n) {
 		Stack<Integer> s = new Stack<>();
-		
-		while(w!=-1) {
-			s.push(w);
-			w = from[w];
+		s.push(n);
+		while (from[n] != -1) {
+			int i = from[n];
+			s.push(i);
+			n = i;
 		}
 		
-		while(!s.isEmpty()) {
-			list.add(s.pop());
+		while (!s.isEmpty()) {
+			Integer i = s.pop();
+			System.out.print(i + " ");
 		}
-		
-		return list;
-	}
-	
-	public void showPath(int w) {
-		List<Integer> list = path(w);
-		for (Integer i : list) {
-			System.out.println(i);
-		}
-	}
-	
-	//有没有路径看有没有被访问过
-	public boolean hasPath(int w) {
-		return v[w];
 	}
 }

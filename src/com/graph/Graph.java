@@ -3,10 +3,15 @@ package com.graph;
 import java.util.List;
 
 public interface Graph {
-	public int V();
+
+	public void add(int m, int n);
+	
+	public List<Integer> getAdj(int m);
+	
 	public int E();
-	public void addEdge(int v,int w);
-	public boolean hasEdge(int v,int w);
-	public List<Integer> adj(int i);
-	public void show();
+	
+	public int V();
+	
+	public boolean hasEdge(int m, int n);
+	
 }
