@@ -3,6 +3,11 @@ package com.graph.base;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 临接表表示图
+ * @author beta
+ *
+ */
 public class SparseGraph implements Graph{
 	private int v;
 	private int e;
