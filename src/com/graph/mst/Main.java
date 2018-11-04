@@ -8,7 +8,10 @@ public class Main {
 		WeightGraph g = r.read(new File("text3.txt"), 2);
 //		LazyPrimMst mst = new LazyPrimMst(g);
 //		mst.showMst();
-		OptPrimMst opm = new OptPrimMst(g);
-		opm.showMst();
+		
+//		OptPrimMst opm = new OptPrimMst(g);
+//		opm.showMst();
+		KrushMst mst = new KrushMst(g);
+		mst.showMst();
 	}
 }
