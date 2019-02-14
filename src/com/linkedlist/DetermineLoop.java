@@ -4,7 +4,7 @@ package com.linkedlist;
 *使用快慢指针判断链表是否有循环
 */
 public class DetermineLoop {
-  //算法不允许产生任务实例
+  //算法不允许产生任何实例
   private DetermineLoop(){}
   
   static class ListNode {
