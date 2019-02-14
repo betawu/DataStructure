@@ -281,6 +281,23 @@ public class AVLTree<E extends Comparable<E>> {
 		inOrder(node.right);
 	}
 
+	//中序遍历非递归实现
+	public void inOrderNR() {
+		Stack<Node> s = new Stack<>();
+		Node n = root;
+		while (n != null || !s.isEmpty()) {
+			while (n != null) {
+				s.push(n);
+				n = n.left;
+			}
+			if (!s.isEmpty()) {
+				Node node = s.pop();
+				System.out.println(node.data);
+				n = node.right;
+			}
+		}
+	}
+	
 	//后续遍历
 	public void postOrder() {
 		postOrder(root);
