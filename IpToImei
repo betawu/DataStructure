@@ -1,0 +1,32 @@
+func IpToImei(buff []byte) string {
+	// 伪ＩＰ 转为 imei 号 注意！！！！！ 设备号只能为130~145 开头
+	var headImei byte = 0x00
+	imei := []string{}
+	for i := byte(0); i < 4; i++ { //1到4
+		if buff[i] >= 0x80 {//128
+			headImei |= (byte(8) >> i)
+			imei1 := int(buff[i] - 0x80)
+			if imei1 < 10 {
+				imei = append(imei, fmt.Sprintf("0%d", imei1))
+
+			} else {
+				imei = append(imei, strconv.Itoa(imei1))//将整数转换为十进制字符串形式
+
+			}
+		} else {
+			headImei |= 0x00
+			if int(buff[i]) < 10 {
+				imei = append(imei, fmt.Sprintf("0%d", int(buff[i])))
+			} else {
+				imei = append(imei, strconv.Itoa(int(buff[i])))
+
+			}
+		}
+		//fmt.Println(imei)
+	}
+	// 只支持130~145
+	headImei = headImei + 30
+	headImeiStr := fmt.Sprintf("%d", headImei)
+	return "1" + headImeiStr + strings.Join(imei, "")
+
+}
